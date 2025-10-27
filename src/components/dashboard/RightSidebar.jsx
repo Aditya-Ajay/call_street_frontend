@@ -189,44 +189,53 @@ const RightSidebar = () => {
           </h3>
 
           <div className="space-y-2">
-            <button
-              onClick={handleShareInvite}
-              className="w-full px-3 py-2.5 bg-[#5865f2] hover:bg-[#4752c4] text-white text-xs font-semibold rounded transition-colors flex items-center justify-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
-              </svg>
-              Share Invite Link
-            </button>
+            {/* Only show Share Invite for analysts */}
+            {user?.user_type === 'analyst' && (
+              <button
+                onClick={handleShareInvite}
+                className="w-full px-3 py-2.5 bg-[#5865f2] hover:bg-[#4752c4] text-white text-xs font-semibold rounded transition-colors flex items-center justify-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                </svg>
+                Share Invite Link
+              </button>
+            )}
 
-            <button
-              onClick={handleViewProfile}
-              className="w-full px-3 py-2.5 bg-[#40444b] hover:bg-[#4f545c] text-white text-xs font-semibold rounded transition-colors flex items-center justify-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              View Public Profile
-            </button>
+            {/* View Public Profile - Only for analysts */}
+            {user?.user_type === 'analyst' && (
+              <button
+                onClick={handleViewProfile}
+                className="w-full px-3 py-2.5 bg-[#40444b] hover:bg-[#4f545c] text-white text-xs font-semibold rounded transition-colors flex items-center justify-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                View Public Profile
+              </button>
+            )}
 
-            <button
-              onClick={handleManageTiers}
-              className="w-full px-3 py-2.5 bg-[#40444b] hover:bg-[#4f545c] text-white text-xs font-semibold rounded transition-colors flex items-center justify-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-                <path
-                  fillRule="evenodd"
-                  d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              Manage Tiers
-            </button>
+            {/* Manage Tiers - Only for analysts */}
+            {user?.user_type === 'analyst' && (
+              <button
+                onClick={handleManageTiers}
+                className="w-full px-3 py-2.5 bg-[#40444b] hover:bg-[#4f545c] text-white text-xs font-semibold rounded transition-colors flex items-center justify-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                  <path
+                    fillRule="evenodd"
+                    d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Manage Tiers
+              </button>
+            )}
           </div>
         </div>
       </div>

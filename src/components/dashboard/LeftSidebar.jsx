@@ -85,7 +85,10 @@ const LeftSidebar = () => {
             return (
               <button
                 key={channelId}
-                onClick={() => changeChannel(channelId)}
+                onClick={() => {
+                  changeChannel(channelId);
+                  handleNavigate('/dashboard');
+                }}
                 className={`
                   w-full px-4 py-2.5 flex items-center justify-between gap-2
                   transition-colors text-left group
@@ -125,7 +128,10 @@ const LeftSidebar = () => {
             return (
               <button
                 key={channelId}
-                onClick={() => changeChannel(channelId)}
+                onClick={() => {
+                  changeChannel(channelId);
+                  handleNavigate('/dashboard');
+                }}
                 className={`
                   w-full px-4 py-2.5 flex items-center justify-between gap-2
                   transition-colors text-left group

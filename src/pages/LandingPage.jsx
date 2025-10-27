@@ -69,12 +69,12 @@ const LandingPage = () => {
             <Link to="/discovery" className="text-gray-600 hover:text-primary font-medium transition">
               Browse Analysts
             </Link>
-            <Link to="/how-it-works" className="text-gray-600 hover:text-primary font-medium transition">
+            <a href="#how-it-works" className="text-gray-600 hover:text-primary font-medium transition">
               How it Works
-            </Link>
-            <Link to="/pricing" className="text-gray-600 hover:text-primary font-medium transition">
+            </a>
+            <a href="#pricing" className="text-gray-600 hover:text-primary font-medium transition">
               Pricing
-            </Link>
+            </a>
             <Link to="/login">
               <Button variant="outline" size="sm">
                 Sign In
@@ -113,20 +113,20 @@ const LandingPage = () => {
               >
                 Browse Analysts
               </Link>
-              <Link
-                to="/how-it-works"
+              <a
+                href="#how-it-works"
                 className="px-4 py-3 text-gray-600 hover:text-primary hover:bg-primary-light rounded-lg font-medium transition"
                 onClick={() => setIsMenuOpen(false)}
               >
                 How it Works
-              </Link>
-              <Link
-                to="/pricing"
+              </a>
+              <a
+                href="#pricing"
                 className="px-4 py-3 text-gray-600 hover:text-primary hover:bg-primary-light rounded-lg font-medium transition"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Pricing
-              </Link>
+              </a>
               <Link to="/login" onClick={() => setIsMenuOpen(false)}>
                 <Button variant="outline" size="md" fullWidth>
                   Sign In
@@ -337,7 +337,7 @@ const LandingPage = () => {
       </section>
 
       {/* How It Works Section */}
-      <section className="py-16 md:py-24 px-4 bg-gray-50">
+      <section id="how-it-works" className="py-16 md:py-24 px-4 bg-gray-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -473,7 +473,7 @@ const LandingPage = () => {
       </section>
 
       {/* Pricing Info Section */}
-      <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-primary-light to-blue-50">
+      <section id="pricing" className="py-16 md:py-24 px-4 bg-gradient-to-br from-primary-light to-blue-50">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -628,15 +628,15 @@ const LandingPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/discovery">
-              <Button size="lg" className="bg-white text-primary hover:bg-gray-100">
+              <Button size="lg" className="bg-white !text-primary hover:bg-gray-100">
                 Get Started Now
               </Button>
             </Link>
-            <Link to="/how-it-works">
+            <a href="#how-it-works">
               <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-primary">
                 Learn More
               </Button>
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -663,14 +663,14 @@ const LandingPage = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/how-it-works" className="text-gray-400 hover:text-white text-sm transition">
+                  <a href="#how-it-works" className="text-gray-400 hover:text-white text-sm transition">
                     How it Works
-                  </Link>
+                  </a>
                 </li>
                 <li>
-                  <Link to="/pricing" className="text-gray-400 hover:text-white text-sm transition">
+                  <a href="#pricing" className="text-gray-400 hover:text-white text-sm transition">
                     Pricing
-                  </Link>
+                  </a>
                 </li>
                 <li>
                   <Link to="/about" className="text-gray-400 hover:text-white text-sm transition">

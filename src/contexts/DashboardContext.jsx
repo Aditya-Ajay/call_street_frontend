@@ -159,25 +159,49 @@ export const DashboardProvider = ({ children }) => {
         return;
       }
 
-      // Try to fetch from API, fallback to dummy data
+      // Fetch from API
       try {
         const params = {
-          analyst_id: 'me', // Backend will use authenticated user
-          tier: channelConfig.tier,
-          post_type: channelConfig.type === 'call' ? 'call' : 'announcement',
           page,
           limit: 20,
         };
 
-        // Add filter if not 'all'
-        if (postsFilter !== 'all') {
-          params.status = postsFilter;
+        // Filter by current user (analyst's own posts)
+        if (user?.id) {
+          params.analyst_id = user.id;
         }
+
+        // Filter by audience (free/paid based on channel)
+        if (channelConfig.tier) {
+          params.audience = channelConfig.tier;
+        }
+
+        // Filter by post type (call or announcement)
+        if (channelConfig.type === 'call') {
+          params.post_type = 'call';
+        } else if (channelConfig.type === 'announcement') {
+          params.post_type = 'update';
+        }
+
+        // Add status filter if not 'all'
+        if (postsFilter !== 'all') {
+          // Map UI filter to backend status
+          // 'active' -> 'open', 'closed' -> 'closed', 'expired' -> 'expired'
+          if (postsFilter === 'active') {
+            params.call_status = 'open';
+          } else {
+            params.call_status = postsFilter;
+          }
+        }
+
+        console.log('Fetching posts with params:', params);
 
         const response = await postAPI.getPosts(params);
 
         if (response.success) {
-          const newPosts = response.data.posts || [];
+          const newPosts = response.data.posts || response.data || [];
+
+          console.log('Fetched posts:', newPosts);
 
           if (append) {
             setPosts(prev => [...prev, ...newPosts]);
@@ -190,29 +214,19 @@ export const DashboardProvider = ({ children }) => {
           return;
         }
       } catch (apiError) {
-        console.log('API fetch failed, using dummy data:', apiError);
+        console.error('API fetch failed:', apiError);
+        showToast('Failed to load posts from database', 'error');
+        // Clear posts on error
+        setPosts([]);
+        setHasMorePosts(false);
       }
-
-      // Fallback to dummy data
-      const channelKey = selectedChannel;
-      const dummyChannelPosts = DUMMY_POSTS[channelKey] || [];
-
-      // Apply filter
-      let filteredPosts = dummyChannelPosts;
-      if (postsFilter !== 'all') {
-        filteredPosts = dummyChannelPosts.filter(post => post.status === postsFilter);
-      }
-
-      setPosts(filteredPosts);
-      setHasMorePosts(false);
-      setCurrentPage(1);
     } catch (error) {
       console.error('Failed to fetch posts:', error);
       showToast('Failed to load posts', 'error');
     } finally {
       setPostsLoading(false);
     }
-  }, [selectedChannel, postsFilter, showToast]);
+  }, [selectedChannel, postsFilter, user, showToast]);
 
   /**
    * Load more posts (infinite scroll)
@@ -230,11 +244,53 @@ export const DashboardProvider = ({ children }) => {
     try {
       const channelConfig = CHANNEL_CONFIG[selectedChannel];
 
+      // Map frontend field names to backend expected field names
       const payload = {
-        ...postData,
-        tier: channelConfig.tier,
-        post_type: channelConfig.type === 'call' ? 'call' : 'announcement',
+        post_type: channelConfig.type === 'call' ? 'call' : postData.post_type || 'update',
+        audience: channelConfig.tier, // 'free' or 'paid'
+        language: 'en',
       };
+
+      // For call channels - map call form data to backend format
+      if (channelConfig.type === 'call') {
+        // Build raw_content from structured call data
+        const rawContent = `${postData.action} ${postData.stock_symbol} at ${postData.entry_price}, target ${postData.target_price}, stop loss ${postData.stop_loss}. Strategy: ${postData.strategy_type}. ${postData.notes || ''}`.trim();
+
+        payload.raw_content = rawContent;
+        payload.use_ai = false; // Don't use AI formatting since we have structured data
+
+        // Include structured data directly in content_formatted
+        payload.content_formatted = {
+          stock: postData.stock_symbol,
+          stock_symbol: postData.stock_symbol,
+          action: postData.action,
+          entry_price: parseFloat(postData.entry_price),
+          target_price: parseFloat(postData.target_price),
+          stop_loss: parseFloat(postData.stop_loss),
+          strategy_type: postData.strategy_type,
+          notes: postData.notes || '',
+          reasoning: postData.notes || ''
+        };
+
+        // Also send as top-level fields for backend processing
+        payload.stock_symbol = postData.stock_symbol;
+        payload.action = postData.action;
+        payload.entry_price = parseFloat(postData.entry_price);
+        payload.target_price = parseFloat(postData.target_price);
+        payload.stop_loss = parseFloat(postData.stop_loss);
+        payload.strategy_type = postData.strategy_type;
+      } else {
+        // For announcement channels - map announcement form data
+        if (!postData.content || !postData.content.trim()) {
+          throw new Error('Content is required');
+        }
+
+        payload.raw_content = postData.content; // Backend expects 'raw_content'
+        payload.title = postData.title;
+        payload.use_ai = false; // Don't use AI for announcements
+      }
+
+      console.log('Creating post with payload:', payload);
 
       const response = await postAPI.createPost(payload);
 
@@ -251,6 +307,7 @@ export const DashboardProvider = ({ children }) => {
         return response.data;
       }
     } catch (error) {
+      console.error('Create post error:', error);
       showToast(error.message || 'Failed to create post', 'error');
       throw error;
     }

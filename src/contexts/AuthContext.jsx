@@ -126,6 +126,17 @@ export const AuthProvider = ({ children }) => {
       if (response.success) {
         const { user: userData } = response.data;
 
+        // Debug: Log user data to see what we're getting
+        console.log('✅ Login successful! User data:', userData);
+        console.log('👤 User type:', userData.user_type);
+        console.log('📋 Profile completed:', userData.profile_completed);
+
+        // Validate user_type
+        if (!userData.user_type || (userData.user_type !== 'trader' && userData.user_type !== 'analyst')) {
+          console.error('⚠️ Invalid or missing user_type in response:', userData.user_type);
+          throw new Error('Invalid user type received from server');
+        }
+
         // Update state (cookies are automatically handled by browser)
         setUser(userData);
         setIsAuthenticated(true);

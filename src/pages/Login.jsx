@@ -39,12 +39,27 @@ const Login = () => {
   // Redirect if already logged in
   useEffect(() => {
     if (!authLoading && isAuthenticated && user) {
+      console.log('🔄 Login page redirect check:', {
+        user_type: user.user_type,
+        profile_completed: user.profile_completed,
+        isAuthenticated,
+        user
+      });
+
       // Check if analyst needs onboarding
       if (user.user_type === 'analyst' && !user.profile_completed) {
+        console.log('🎓 Redirecting to analyst onboarding...');
         navigate('/analyst/onboarding/profile', { replace: true });
+      } else if (user.user_type === 'analyst') {
+        console.log(`➡️ Redirecting to /dashboard (user_type: ${user.user_type})`);
+        navigate('/dashboard', { replace: true });
+      } else if (user.user_type === 'trader') {
+        console.log(`➡️ Redirecting to /feed (user_type: ${user.user_type})`);
+        navigate('/feed', { replace: true });
       } else {
-        const redirectPath = user.user_type === 'analyst' ? '/dashboard' : '/feed';
-        navigate(redirectPath, { replace: true });
+        console.error('⚠️ Unknown user_type:', user.user_type);
+        // Default to feed for unknown user types
+        navigate('/feed', { replace: true });
       }
     }
   }, [isAuthenticated, user, authLoading, navigate]);
@@ -87,11 +102,11 @@ const Login = () => {
 
   /**
    * Validate SEBI registration number format
-   * Format: INA followed by 9 digits (e.g., INA000001234)
+   * Format: INA/INH/INM/INP followed by 9 digits (e.g., INA000001234)
    */
   const isValidSebiNumber = (sebi) => {
-    const sebiRegex = /^INA\d{9}$/;
-    return sebiRegex.test(sebi);
+    const sebiRegex = /^IN[AHMNP]\d{9}$/;
+    return sebiRegex.test(sebi.toUpperCase());
   };
 
   const handleSebiSubmit = async (e) => {
@@ -105,7 +120,7 @@ const Login = () => {
     }
 
     if (!isValidSebiNumber(sebiNumber.trim())) {
-      setSebiError('Invalid SEBI format. Must be INA followed by 9 digits (e.g., INA000001234)');
+      setSebiError('Invalid SEBI format. Must be INA/INH/INM/INP followed by 9 digits (e.g., INA000001234)');
       return;
     }
 

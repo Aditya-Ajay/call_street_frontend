@@ -60,7 +60,7 @@ const ChatInterface = ({ channelId }) => {
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
           <div>
             <h3 className="font-semibold text-gray-900">Community Chat</h3>
-            <p className="text-sm text-gray-500">Demo Mode - Stream.io connecting...</p>
+            <p className="text-sm text-gray-500">Demo Mode - GetStream.io connecting...</p>
           </div>
           <button
             onClick={() => window.location.reload()}
@@ -105,7 +105,7 @@ const ChatInterface = ({ channelId }) => {
             </button>
           </div>
           <p className="text-xs text-gray-400 mt-2">
-            Chat is in demo mode. Stream.io connection will retry automatically.
+            Chat is in demo mode. GetStream.io connection will retry automatically.
           </p>
         </div>
       </div>

@@ -58,7 +58,7 @@ const SEBIUpload = () => {
       newErrors.sebiNumber = 'SEBI registration number is required';
     }
 
-    if (!certificateFile && !formData.sebi_certificate_url) {
+    if (!certificateFile && !formData.sebi_certificate_file) {
       newErrors.certificateFile = 'Please upload your SEBI certificate';
     }
 
@@ -80,33 +80,19 @@ const SEBIUpload = () => {
     setUploading(true);
 
     try {
-      let certificateUrl = formData.sebi_certificate_url;
-
-      // Upload certificate if selected
-      if (certificateFile) {
-        const uploadFormData = new FormData();
-        uploadFormData.append('document', certificateFile);
-        uploadFormData.append('document_type', 'sebi_certificate');
-
-        const uploadResponse = await analystAPI.uploadDocument(uploadFormData);
-        if (uploadResponse.success) {
-          certificateUrl = uploadResponse.data.document_url;
-        }
-      }
-
-      // Update onboarding context
+      // Store file and SEBI info in context (upload will happen after profile creation)
       updateFormData({
         sebi_number: sebiNumber.trim(),
         ria_number: riaNumber.trim(),
-        sebi_certificate_url: certificateUrl,
+        sebi_certificate_file: certificateFile, // Store file object
       });
 
-      success('SEBI certificate uploaded successfully!');
+      success('SEBI information saved!');
       nextStep();
       navigate('/analyst/onboarding/submit');
     } catch (err) {
-      console.error('SEBI upload error:', err);
-      error(err.message || 'Failed to upload SEBI certificate');
+      console.error('SEBI save error:', err);
+      error(err.message || 'Failed to save SEBI information');
     } finally {
       setUploading(false);
     }
@@ -228,7 +214,7 @@ const SEBIUpload = () => {
                 className="hidden"
               />
 
-              {fileName || formData.sebi_certificate_url ? (
+              {fileName || formData.sebi_certificate_file ? (
                 <div className="flex flex-col items-center">
                   <svg
                     className="w-12 h-12 text-primary mb-3"
@@ -244,7 +230,7 @@ const SEBIUpload = () => {
                     />
                   </svg>
                   <p className="font-medium text-gray-900 mb-1">
-                    {fileName || 'Certificate uploaded'}
+                    {fileName || formData.sebi_certificate_file?.name || 'Certificate uploaded'}
                   </p>
                   <p className="text-sm text-primary">Click to change file</p>
                 </div>

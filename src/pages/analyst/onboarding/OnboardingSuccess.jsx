@@ -25,49 +25,9 @@ const OnboardingSuccess = () => {
    * Submit complete onboarding data to backend
    */
   useEffect(() => {
-    const submitOnboarding = async () => {
-      try {
-        // Prepare payload
-        const payload = {
-          display_name: formData.display_name,
-          bio: formData.bio,
-          specializations: formData.specializations,
-          languages: formData.languages,
-          years_of_experience: formData.years_of_experience,
-          allow_free_audience: formData.allow_free_audience,
-          profile_photo_url: formData.profile_photo_url,
-          pricing_tiers: formData.pricing_tiers,
-          sebi_number: formData.sebi_number,
-          ria_number: formData.ria_number,
-          sebi_certificate_url: formData.sebi_certificate_url,
-        };
-
-        // Submit to backend
-        const response = await analystAPI.setupProfile(payload);
-
-        if (response.success) {
-          // Update user in auth context
-          updateUser({
-            display_name: formData.display_name,
-            profile_completed: false, // Still needs admin verification
-            verification_status: 'pending',
-          });
-
-          // Clear onboarding data from localStorage
-          resetOnboarding();
-
-          success('Application submitted successfully!');
-        }
-      } catch (err) {
-        console.error('Onboarding submission error:', err);
-        setSubmitError(err.message || 'Failed to submit application');
-        error(err.message || 'Failed to submit application');
-      } finally {
-        setSubmitting(false);
-      }
-    };
-
-    submitOnboarding();
+    // Skip submission and redirect to dashboard
+    setSubmitting(false);
+    navigate('/dashboard', { replace: true });
   }, []);
 
   /**

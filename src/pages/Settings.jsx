@@ -112,7 +112,7 @@ const Settings = () => {
 
   useEffect(() => {
     fetchAllSettings();
-  }, [fetchAllSettings]);
+  }, []);
 
   // ========================================
   // PROFILE TAB HANDLERS
@@ -740,10 +740,9 @@ const Settings = () => {
               className={`
                 py-4 px-1 border-b-2 font-semibold text-sm whitespace-nowrap
                 transition-colors
-                ${
-                  activeTab === 'profile'
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                ${activeTab === 'profile'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
                 }
               `}
               role="tab"
@@ -756,10 +755,9 @@ const Settings = () => {
               className={`
                 py-4 px-1 border-b-2 font-semibold text-sm whitespace-nowrap
                 transition-colors
-                ${
-                  activeTab === 'pricing'
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                ${activeTab === 'pricing'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
                 }
               `}
               role="tab"
@@ -772,10 +770,9 @@ const Settings = () => {
               className={`
                 py-4 px-1 border-b-2 font-semibold text-sm whitespace-nowrap
                 transition-colors
-                ${
-                  activeTab === 'preferences'
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                ${activeTab === 'preferences'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
                 }
               `}
               role="tab"

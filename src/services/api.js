@@ -16,6 +16,23 @@ const apiClient = axios.create({
   },
 });
 
+// Request interceptor - Add Authorization header from localStorage
+apiClient.interceptors.request.use(
+  (config) => {
+    // Get token from localStorage (fallback if cookies don't work)
+    const token = localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Response interceptor - Handle errors and token refresh
 apiClient.interceptors.response.use(
   (response) => response.data,

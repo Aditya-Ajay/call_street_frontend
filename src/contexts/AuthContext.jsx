@@ -124,12 +124,13 @@ export const AuthProvider = ({ children }) => {
       );
 
       if (response.success) {
-        const { user: userData } = response.data;
+        const { user: userData, tokens } = response.data;
 
         // Debug: Log user data to see what we're getting
         console.log('✅ Login successful! User data:', userData);
         console.log('👤 User type:', userData.user_type);
         console.log('📋 Profile completed:', userData.profile_completed);
+        console.log('🔑 Tokens received:', tokens ? 'Yes' : 'No');
 
         // Validate user_type
         if (!userData.user_type || (userData.user_type !== 'trader' && userData.user_type !== 'analyst')) {
@@ -137,7 +138,14 @@ export const AuthProvider = ({ children }) => {
           throw new Error('Invalid user type received from server');
         }
 
-        // Update state (cookies are automatically handled by browser)
+        // Store tokens in localStorage (fallback for when cookies don't work)
+        if (tokens) {
+          localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, tokens.accessToken);
+          localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, tokens.refreshToken);
+          console.log('💾 Tokens stored in localStorage');
+        }
+
+        // Update state
         setUser(userData);
         setIsAuthenticated(true);
 
@@ -165,8 +173,10 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Logout API error:', error);
     } finally {
-      // Clear user data from local storage (cookies are cleared by backend)
+      // Clear all auth data from localStorage
       localStorage.removeItem(STORAGE_KEYS.USER_DATA);
+      localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+      localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
 
       // Disconnect socket
       socketService.disconnect();

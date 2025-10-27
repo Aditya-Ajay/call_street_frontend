@@ -24,6 +24,9 @@ apiClient.interceptors.request.use(
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log(`[API] 🔑 Added Authorization header to ${config.url}`);
+    } else {
+      console.log(`[API] ⚠️ No token found in localStorage for ${config.url}`);
     }
 
     return config;

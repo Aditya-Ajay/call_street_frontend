@@ -25,7 +25,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { StreamChat } from 'stream-chat';
 import { useAuth } from './AuthContext';
 import { useToast } from './ToastContext';
-import axios from 'axios';
+import apiClient from '../services/api';
 
 const StreamContext = createContext(null);
 
@@ -94,16 +94,14 @@ export const StreamProvider = ({ children }) => {
 
         // Get user token from backend
         console.log('[Stream] Fetching token from backend...');
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_BASE_URL}/stream/token`,
-          {},
-          {
-            withCredentials: true,
-            timeout: 10000 // 10 second timeout
-          }
-        );
 
-        const { token, userId } = response.data.data;
+        // Use apiClient which automatically adds Authorization header from localStorage
+        const response = await apiClient.post('/stream/token', {});
+
+        console.log('[Stream] Token fetched successfully');
+
+        // apiClient interceptor already extracts response.data
+        const { token, userId } = response.data;
 
         if (!token || !userId) {
           throw new Error('Invalid token response from server');

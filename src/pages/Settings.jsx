@@ -6,6 +6,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../contexts/ToastContext';
+import { useAuth } from '../contexts/AuthContext';
 import { settingsAPI } from '../services/api';
 import Button from '../components/common/Button';
 import ToggleSwitch from '../components/common/ToggleSwitch';
@@ -42,6 +43,7 @@ const LANGUAGES = [
 const Settings = () => {
   const navigate = useNavigate();
   const toast = useToast();
+  const { logout } = useAuth();
 
   // Tab State
   const [activeTab, setActiveTab] = useState('profile');
@@ -576,6 +578,65 @@ const Settings = () => {
     </div>
   );
 
+  const handleLogout = async () => {
+    if (confirm('Are you sure you want to logout?')) {
+      try {
+        await logout();
+        toast.success('Logged out successfully');
+        navigate('/login');
+      } catch (error) {
+        console.error('Logout error:', error);
+        toast.error('Failed to logout');
+      }
+    }
+  };
+
+  const renderAccountTab = () => (
+    <div className="max-w-4xl mx-auto space-y-6">
+      {/* Logout Section */}
+      <div className="bg-white rounded-xl shadow-sm p-6 sm:p-8">
+        <h3 className="text-lg font-bold text-gray-900 mb-4">Account Actions</h3>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg border border-red-200">
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-1">Logout</h4>
+              <p className="text-sm text-gray-600">Sign out of your account</p>
+            </div>
+            <Button
+              variant="outline"
+              size="md"
+              onClick={handleLogout}
+              className="border-red-300 text-red-600 hover:bg-red-50"
+            >
+              Logout
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      {/* Delete Account Section - For Future */}
+      <div className="bg-white rounded-xl shadow-sm p-6 sm:p-8">
+        <h3 className="text-lg font-bold text-red-600 mb-4">Danger Zone</h3>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <div>
+              <h4 className="font-semibold text-gray-900 mb-1">Delete Account</h4>
+              <p className="text-sm text-gray-600">Permanently delete your account and all data</p>
+            </div>
+            <Button
+              variant="outline"
+              size="md"
+              onClick={() => toast.info('Contact support to delete your account')}
+              className="border-red-300 text-red-600 hover:bg-red-50"
+            >
+              Delete
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const renderPreferencesTab = () => (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Email Notifications */}
@@ -780,6 +841,21 @@ const Settings = () => {
             >
               Preferences
             </button>
+            <button
+              onClick={() => setActiveTab('account')}
+              className={`
+                py-4 px-1 border-b-2 font-semibold text-sm whitespace-nowrap
+                transition-colors
+                ${activeTab === 'account'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300'
+                }
+              `}
+              role="tab"
+              aria-selected={activeTab === 'account'}
+            >
+              Account
+            </button>
           </nav>
         </div>
       </div>
@@ -789,6 +865,7 @@ const Settings = () => {
         {activeTab === 'profile' && renderProfileTab()}
         {activeTab === 'pricing' && renderPricingTab()}
         {activeTab === 'preferences' && renderPreferencesTab()}
+        {activeTab === 'account' && renderAccountTab()}
       </div>
 
       {/* Modals */}

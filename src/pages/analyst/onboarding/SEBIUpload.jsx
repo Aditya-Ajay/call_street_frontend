@@ -13,7 +13,7 @@ import OnboardingProgress from '../../../components/onboarding/OnboardingProgres
 
 const SEBIUpload = () => {
   const navigate = useNavigate();
-  const { formData, updateFormData, nextStep, prevStep } = useOnboarding();
+  const { formData, updateFormData, nextStep, prevStep, resetOnboarding } = useOnboarding();
   const { success, error } = useToast();
   const fileInputRef = useRef(null);
 
@@ -80,16 +80,20 @@ const SEBIUpload = () => {
     setUploading(true);
 
     try {
-      // Store file and SEBI info in context (upload will happen after profile creation)
+      // Store file and SEBI info in context
       updateFormData({
         sebi_number: sebiNumber.trim(),
         ria_number: riaNumber.trim(),
         sebi_certificate_file: certificateFile, // Store file object
       });
 
-      success('SEBI information saved!');
-      nextStep();
-      navigate('/analyst/onboarding/submit');
+      success('SEBI information saved! Redirecting to dashboard...');
+
+      // For now, skip submission and go directly to dashboard
+      setTimeout(() => {
+        resetOnboarding();
+        navigate('/dashboard', { replace: true });
+      }, 1000);
     } catch (err) {
       console.error('SEBI save error:', err);
       error(err.message || 'Failed to save SEBI information');

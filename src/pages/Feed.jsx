@@ -42,6 +42,14 @@ const Feed = () => {
   // Load analysts on mount
   useEffect(() => {
     const followedAnalysts = getFollowedAnalysts();
+
+    // If no analysts followed, redirect to discovery
+    if (followedAnalysts.length === 0) {
+      navigate('/discovery', { replace: true });
+      showToast('Browse and subscribe to analysts to see their content', 'info');
+      return;
+    }
+
     setAnalysts(followedAnalysts);
 
     // Auto-expand first analyst and select first free channel
@@ -50,7 +58,7 @@ const Feed = () => {
       setExpandedAnalysts({ [firstAnalyst.id]: true });
       handleChannelSelect(firstAnalyst.id, 'free-announcements', false);
     }
-  }, []);
+  }, [navigate, showToast]);
 
   // Toggle analyst expansion
   const toggleAnalyst = (analystId) => {

@@ -13,6 +13,8 @@ import { formatDistanceToNow } from 'date-fns';
 const PostCard = ({ post, onBookmark, isBookmarked = false }) => {
   const [expanded, setExpanded] = useState(false);
   const [bookmarking, setBookmarking] = useState(false);
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   const handleBookmark = async () => {
     setBookmarking(true);
@@ -22,6 +24,32 @@ const PostCard = ({ post, onBookmark, isBookmarked = false }) => {
       console.error('Bookmark failed:', error);
     } finally {
       setBookmarking(false);
+    }
+  };
+
+  const handleCopy = async () => {
+    const postText = `
+📊 ${post.stock_symbol} - ${post.action?.toUpperCase()}
+
+${post.content || post.description || ''}
+
+💰 Entry: ₹${post.entry_price}
+🎯 Target: ₹${post.target_price}
+🛑 Stop Loss: ₹${post.stop_loss}
+
+📈 Strategy: ${post.strategy || 'N/A'}
+⏰ Timeframe: ${post.timeframe || 'N/A'}
+${post.confidence ? `💪 Confidence: ${post.confidence}` : ''}
+
+Via ${post.analyst?.name || 'Analyst'} on AnalystHub
+    `.trim();
+
+    try {
+      await navigator.clipboard.writeText(postText);
+      setCopySuccess(true);
+      setTimeout(() => setCopySuccess(false), 2000);
+    } catch (error) {
+      console.error('Copy failed:', error);
     }
   };
 
@@ -200,13 +228,19 @@ const PostCard = ({ post, onBookmark, isBookmarked = false }) => {
       {/* Action Buttons */}
       <div className="flex items-center justify-between pt-3 border-t border-gray-200">
         <button
-          onClick={() => navigator.clipboard.writeText(JSON.stringify(post, null, 2))}
-          className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
+          onClick={handleCopy}
+          className={`flex items-center gap-2 transition-colors ${
+            copySuccess ? 'text-green-600' : 'text-gray-600 hover:text-primary'
+          }`}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            {copySuccess ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            )}
           </svg>
-          <span className="text-sm font-medium">Copy</span>
+          <span className="text-sm font-medium">{copySuccess ? 'Copied!' : 'Copy'}</span>
         </button>
 
         <button
@@ -219,15 +253,59 @@ const PostCard = ({ post, onBookmark, isBookmarked = false }) => {
           <svg className="w-5 h-5" fill={isBookmarked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
           </svg>
-          <span className="text-sm font-medium">Save</span>
+          <span className="text-sm font-medium">{bookmarking ? 'Saving...' : 'Save'}</span>
         </button>
 
-        <button className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span className="text-sm font-medium">More</span>
-        </button>
+        <div className="relative">
+          <button
+            onClick={() => setShowMoreMenu(!showMoreMenu)}
+            className="flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="text-sm font-medium">More</span>
+          </button>
+
+          {/* More Menu Dropdown */}
+          {showMoreMenu && (
+            <>
+              <div
+                className="fixed inset-0 z-10"
+                onClick={() => setShowMoreMenu(false)}
+              />
+              <div className="absolute right-0 bottom-full mb-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-20">
+                <button
+                  onClick={() => {
+                    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(`Check out this trading call: ${post.stock_symbol} - ${post.action}`)}`, '_blank');
+                    setShowMoreMenu(false);
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 transition"
+                >
+                  Share on Twitter
+                </button>
+                <button
+                  onClick={() => {
+                    window.open(`https://wa.me/?text=${encodeURIComponent(`${post.stock_symbol} - ${post.action}\nEntry: ₹${post.entry_price}\nTarget: ₹${post.target_price}`)}`, '_blank');
+                    setShowMoreMenu(false);
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 transition"
+                >
+                  Share on WhatsApp
+                </button>
+                <button
+                  onClick={() => {
+                    alert('Report feature coming soon!');
+                    setShowMoreMenu(false);
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition"
+                >
+                  Report Post
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

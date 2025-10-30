@@ -25,9 +25,48 @@ const OnboardingSuccess = () => {
    * Submit complete onboarding data to backend
    */
   useEffect(() => {
-    // Skip submission and redirect to dashboard
-    setSubmitting(false);
-    navigate('/dashboard', { replace: true });
+    const submitOnboarding = async () => {
+      try {
+        setSubmitting(true);
+        setSubmitError(null);
+
+        // Prepare submission data
+        const submissionData = {
+          display_name: formData.display_name,
+          bio: formData.bio,
+          specializations: formData.specializations,
+          languages: formData.languages,
+          years_of_experience: formData.years_of_experience,
+          allow_free_subscribers: formData.allow_free_audience,
+          profile_photo_url: formData.profile_photo_url,
+          pricing_tiers: formData.pricing_tiers || [],
+          sebi_number: formData.sebi_number,
+          sebi_document_url: formData.sebi_certificate_url || '', // If uploaded separately
+        };
+
+        console.log('Submitting onboarding data:', submissionData);
+
+        // Call API to complete profile setup
+        const response = await analystAPI.completeProfileSetup(submissionData);
+
+        if (response.success) {
+          success('Profile setup completed successfully!');
+          // Update user data in auth context
+          updateUser({ profile_completed: true });
+          // Clear onboarding data
+          resetOnboarding();
+          setSubmitting(false);
+        } else {
+          throw new Error(response.message || 'Failed to complete profile setup');
+        }
+      } catch (err) {
+        console.error('Onboarding submission error:', err);
+        setSubmitError(err.message || 'Failed to submit your application. Please try again.');
+        setSubmitting(false);
+      }
+    };
+
+    submitOnboarding();
   }, []);
 
   /**

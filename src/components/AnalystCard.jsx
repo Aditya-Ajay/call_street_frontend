@@ -114,25 +114,13 @@ const AnalystCard = ({ analyst, onClick }) => {
         </div>
       )}
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-3 gap-3 mb-4 pb-4 border-b border-gray-100">
-        <div className="text-center">
-          <p className="text-xs text-gray-500 mb-1">Calls</p>
-          <p className="text-sm font-bold text-gray-900">
+      {/* Stats - Total Calls Only */}
+      <div className="mb-4 pb-4 border-b border-gray-100">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-gray-600">Total Calls</span>
+          <span className="text-lg font-bold text-gray-900">
             {formatCompactNumber(analyst.total_posts || analyst.total_calls_made || 0)}
-          </p>
-        </div>
-        <div className="text-center">
-          <p className="text-xs text-gray-500 mb-1">Accuracy</p>
-          <p className={`text-sm font-bold ${analyst.accuracy >= 80 ? 'text-green-600' : analyst.accuracy >= 70 ? 'text-blue-600' : 'text-gray-900'}`}>
-            {analyst.accuracy || analyst.success_rate ? `${analyst.accuracy || analyst.success_rate}%` : 'N/A'}
-          </p>
-        </div>
-        <div className="text-center">
-          <p className="text-xs text-gray-500 mb-1">Response</p>
-          <p className="text-sm font-bold text-gray-900">
-            {analyst.avg_reply_time || '< 1h'}
-          </p>
+          </span>
         </div>
       </div>
 

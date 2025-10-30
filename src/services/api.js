@@ -299,6 +299,56 @@ export const analystAPI = {
 };
 
 // ============================================
+// TRADER APIs
+// ============================================
+
+export const traderAPI = {
+  /**
+   * Complete trader onboarding
+   * @param {object} data - Onboarding data
+   */
+  completeOnboarding: (data) => apiClient.post('/traders/onboard', data),
+
+  /**
+   * Get trader profile
+   */
+  getProfile: () => apiClient.get('/traders/profile/me'),
+
+  /**
+   * Update trader profile
+   * @param {object} data - Updated profile data
+   */
+  updateProfile: (data) => apiClient.put('/traders/profile', data),
+
+  /**
+   * Get trader dashboard
+   */
+  getDashboard: () => apiClient.get('/traders/dashboard'),
+
+  /**
+   * Get trader subscriptions
+   */
+  getSubscriptions: () => apiClient.get('/traders/subscriptions'),
+
+  /**
+   * Get trader bookmarks
+   */
+  getBookmarks: () => apiClient.get('/traders/bookmarks'),
+
+  /**
+   * Add bookmark
+   * @param {string} postId - Post ID to bookmark
+   */
+  addBookmark: (postId) => apiClient.post('/traders/bookmarks', { post_id: postId }),
+
+  /**
+   * Remove bookmark
+   * @param {string} postId - Post ID to unbookmark
+   */
+  removeBookmark: (postId) => apiClient.delete(`/traders/bookmarks/${postId}`),
+};
+
+// ============================================
 // POST APIs
 // ============================================
 

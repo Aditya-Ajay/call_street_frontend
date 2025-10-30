@@ -27,6 +27,10 @@ import PricingSetup from './pages/analyst/onboarding/PricingSetup';
 import SEBIUpload from './pages/analyst/onboarding/SEBIUpload';
 import OnboardingSuccess from './pages/analyst/onboarding/OnboardingSuccess';
 
+// Trader Pages
+import TraderOnboarding from './pages/trader/onboarding/TraderOnboarding';
+import TraderDashboard from './pages/trader/TraderDashboard';
+
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth();
@@ -60,6 +64,29 @@ const OnboardingRoute = ({ children }) => {
 
   if (user?.user_type !== 'analyst') {
     return <Navigate to="/feed" replace />;
+  }
+
+  return children;
+};
+
+// Trader Onboarding Route Component
+const TraderOnboardingRoute = ({ children }) => {
+  const { isAuthenticated, user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (user?.user_type !== 'trader') {
+    return <Navigate to="/discovery" replace />;
   }
 
   return children;
@@ -172,6 +199,24 @@ const AppRoutes = () => {
           <OnboardingRoute>
             <OnboardingSuccess />
           </OnboardingRoute>
+        }
+      />
+
+      {/* Trader Routes */}
+      <Route
+        path="/trader/onboarding"
+        element={
+          <TraderOnboardingRoute>
+            <TraderOnboarding />
+          </TraderOnboardingRoute>
+        }
+      />
+      <Route
+        path="/trader/dashboard"
+        element={
+          <ProtectedRoute>
+            <TraderDashboard />
+          </ProtectedRoute>
         }
       />
 

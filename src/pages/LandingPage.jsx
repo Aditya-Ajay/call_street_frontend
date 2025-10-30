@@ -72,9 +72,6 @@ const LandingPage = () => {
             <a href="#how-it-works" className="text-gray-600 hover:text-primary font-medium transition">
               How it Works
             </a>
-            <a href="#pricing" className="text-gray-600 hover:text-primary font-medium transition">
-              Pricing
-            </a>
             <Link to="/login">
               <Button variant="outline" size="sm">
                 Sign In
@@ -119,13 +116,6 @@ const LandingPage = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 How it Works
-              </a>
-              <a
-                href="#pricing"
-                className="px-4 py-3 text-gray-600 hover:text-primary hover:bg-primary-light rounded-lg font-medium transition"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Pricing
               </a>
               <Link to="/login" onClick={() => setIsMenuOpen(false)}>
                 <Button variant="outline" size="md" fullWidth>
@@ -472,151 +462,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Pricing Info Section */}
-      <section id="pricing" className="py-16 md:py-24 px-4 bg-gradient-to-br from-primary-light to-blue-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Flexible Pricing for Everyone
-            </h2>
-            <p className="text-lg text-gray-600">
-              Choose a plan that suits your trading needs
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {/* Free Plan */}
-            <div className="bg-white rounded-2xl p-6 border-2 border-gray-200 hover:shadow-xl transition">
-              <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Free Access</h3>
-                <p className="text-gray-600 text-sm mb-4">Start with free analyst content</p>
-                <div className="mb-6">
-                  <span className="text-4xl font-bold text-gray-900">₹0</span>
-                  <span className="text-gray-600">/month</span>
-                </div>
-                <ul className="text-left space-y-3 mb-6">
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-gray-600">Access free tier content</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-gray-600">View analyst profiles</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-gray-600">Track performance</span>
-                  </li>
-                </ul>
-                <Button variant="outline" size="md" fullWidth>
-                  Get Started
-                </Button>
-              </div>
-            </div>
-
-            {/* Weekly/Monthly Plan */}
-            <div className="bg-white rounded-2xl p-6 border-2 border-primary hover:shadow-xl transition relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-xs font-semibold">
-                POPULAR
-              </div>
-              <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Weekly/Monthly</h3>
-                <p className="text-gray-600 text-sm mb-4">Perfect for active traders</p>
-                <div className="mb-6">
-                  <span className="text-4xl font-bold text-primary">₹499</span>
-                  <span className="text-gray-600">/month</span>
-                </div>
-                <ul className="text-left space-y-3 mb-6">
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-gray-600">All free features</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-gray-600">Real-time trading calls</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-gray-600">Community access</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-gray-600">Priority support</span>
-                  </li>
-                </ul>
-                <Button size="md" fullWidth>
-                  Choose Plan
-                </Button>
-              </div>
-            </div>
-
-            {/* Yearly Plan */}
-            <div className="bg-white rounded-2xl p-6 border-2 border-gray-200 hover:shadow-xl transition">
-              <div className="text-center">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Yearly</h3>
-                <p className="text-gray-600 text-sm mb-4">Best value for serious traders</p>
-                <div className="mb-6">
-                  <span className="text-4xl font-bold text-gray-900">₹4,999</span>
-                  <span className="text-gray-600">/year</span>
-                  <div className="mt-2">
-                    <span className="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
-                      Save 17%
-                    </span>
-                  </div>
-                </div>
-                <ul className="text-left space-y-3 mb-6">
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-gray-600">All monthly features</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-gray-600">Exclusive webinars</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-gray-600">Advanced analytics</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <svg className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    <span className="text-sm text-gray-600">24/7 premium support</span>
-                  </li>
-                </ul>
-                <Button variant="outline" size="md" fullWidth>
-                  Choose Plan
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          <p className="text-center text-sm text-gray-600 mt-8">
-            Prices vary by analyst. Free trials available for first-time subscribers.
-          </p>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-16 md:py-24 px-4 bg-gradient-to-br from-primary to-blue-600 text-white">
         <div className="max-w-4xl mx-auto text-center">
@@ -665,11 +510,6 @@ const LandingPage = () => {
                 <li>
                   <a href="#how-it-works" className="text-gray-400 hover:text-white text-sm transition">
                     How it Works
-                  </a>
-                </li>
-                <li>
-                  <a href="#pricing" className="text-gray-400 hover:text-white text-sm transition">
-                    Pricing
                   </a>
                 </li>
                 <li>

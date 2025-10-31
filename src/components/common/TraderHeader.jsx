@@ -76,6 +76,16 @@ const TraderHeader = () => {
                 Feed
               </button>
               <button
+                onClick={() => navigate('/community')}
+                className={`text-sm font-medium transition-colors ${
+                  isActive('/community')
+                    ? 'text-primary'
+                    : 'text-gray-700 hover:text-primary'
+                }`}
+              >
+                Community
+              </button>
+              <button
                 onClick={() => navigate('/subscriptions')}
                 className={`text-sm font-medium transition-colors ${
                   isActive('/subscriptions')

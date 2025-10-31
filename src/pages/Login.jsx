@@ -84,7 +84,15 @@ const Login = () => {
       return;
     }
 
-    // For traders, request OTP directly
+    // For traders, redirect to onboarding page
+    if (userType === 'trader') {
+      navigate('/trader-onboarding', {
+        state: { identifier, type },
+      });
+      return;
+    }
+
+    // Fallback: request OTP directly (shouldn't reach here)
     setLoading(true);
 
     try {

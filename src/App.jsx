@@ -28,8 +28,11 @@ import SEBIUpload from './pages/analyst/onboarding/SEBIUpload';
 import OnboardingSuccess from './pages/analyst/onboarding/OnboardingSuccess';
 
 // Trader Pages
-import TraderOnboarding from './pages/trader/onboarding/TraderOnboarding';
+import TraderOnboardingPage from './pages/TraderOnboarding';
+import VerifyOTP from './pages/VerifyOTP';
 import TraderDashboard from './pages/trader/TraderDashboard';
+import TraderProfile from './pages/trader/TraderProfile';
+import CommunityChat from './pages/CommunityChat';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -99,6 +102,8 @@ const AppRoutes = () => {
       {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/trader-onboarding" element={<TraderOnboardingPage />} />
+      <Route path="/verify-otp" element={<VerifyOTP />} />
       <Route path="/discovery" element={<Discovery />} />
       <Route path="/analyst/:id" element={<AnalystProfile />} />
 
@@ -204,18 +209,26 @@ const AppRoutes = () => {
 
       {/* Trader Routes */}
       <Route
-        path="/trader/onboarding"
-        element={
-          <TraderOnboardingRoute>
-            <TraderOnboarding />
-          </TraderOnboardingRoute>
-        }
-      />
-      <Route
         path="/trader/dashboard"
         element={
           <ProtectedRoute>
             <TraderDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <TraderProfile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/community"
+        element={
+          <ProtectedRoute>
+            <CommunityChat />
           </ProtectedRoute>
         }
       />

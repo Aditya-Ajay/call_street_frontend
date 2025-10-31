@@ -459,6 +459,22 @@ export const chatAPI = {
    * Delete message
    */
   deleteMessage: (messageId) => apiClient.delete(`/chat/messages/${messageId}`),
+
+  /**
+   * Get all community channels (global channels for traders)
+   */
+  getCommunityChannels: () => apiClient.get('/chat/community/channels'),
+
+  /**
+   * Get single community channel by ID
+   */
+  getCommunityChannel: (channelId) => apiClient.get(`/chat/community/${channelId}`),
+
+  /**
+   * Get messages for community channel
+   */
+  getCommunityMessages: (channelId, params) =>
+    apiClient.get(`/chat/community/${channelId}/messages`, { params }),
 };
 
 // ============================================
